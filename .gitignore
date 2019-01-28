@@ -1,0 +1,6 @@
+/.idea
+/bin
+/node_modules
+/pkg
+/target
+**/*.rs.bk
