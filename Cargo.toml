@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["ibaryshnikov <baryshnikov.il@gmail.com>"]
 edition = "2018"
 
+[lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
