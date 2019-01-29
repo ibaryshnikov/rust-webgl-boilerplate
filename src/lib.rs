@@ -50,6 +50,8 @@ impl Scene {
             }
             "#,
         )?;
+
+        #[rustfmt::skip]
         let program = link_program(
             &self.ctx,
             vertex_shader,
@@ -71,13 +73,15 @@ impl Scene {
             .subarray(vertices_location, vertices_location + vertices.len() as u32);
 
         let buffer = self.ctx.create_buffer().ok_or("failed to create buffer")?;
-        self.ctx.bind_buffer(WebGlRenderingContext::ARRAY_BUFFER, Some(&buffer));
+        self.ctx
+            .bind_buffer(WebGlRenderingContext::ARRAY_BUFFER, Some(&buffer));
         self.ctx.buffer_data_with_array_buffer_view(
             WebGlRenderingContext::ARRAY_BUFFER,
             &vert_array,
             WebGlRenderingContext::STATIC_DRAW,
         );
-        self.ctx.vertex_attrib_pointer_with_i32(0, 3, WebGlRenderingContext::FLOAT, false, 0, 0);
+        self.ctx
+            .vertex_attrib_pointer_with_i32(0, 3, WebGlRenderingContext::FLOAT, false, 0, 0);
         self.ctx.enable_vertex_attrib_array(0);
 
         self.ctx.clear_color(0.0, 0.0, 0.0, 1.0);
