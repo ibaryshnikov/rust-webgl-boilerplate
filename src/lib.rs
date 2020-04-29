@@ -1,4 +1,4 @@
-use js_sys::WebAssembly;
+use js_sys::{WebAssembly, Error};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{
@@ -15,19 +15,24 @@ pub struct Scene {
 
 #[wasm_bindgen]
 impl Scene {
-    pub fn new() -> Self {
-        let document = web_sys::window().unwrap().document().unwrap();
-        let canvas = document.get_element_by_id("canvas").unwrap();
-        let canvas = canvas.dyn_into::<HtmlCanvasElement>().unwrap();
+    pub fn new() -> Result<Scene, JsValue> {
+        let document = web_sys::window()
+            .ok_or_else(|| Error::new("Can't get window"))?
+            .document()
+            .ok_or_else(|| Error::new("Can't get document"))?;
+        let canvas = document
+            .get_element_by_id("canvas")
+            .ok_or_else(|| Error::new("Can't get canvas element"))?;
+        let canvas = canvas.dyn_into::<HtmlCanvasElement>()
+            .map_err(|_| Error::new("Can't cast element to HtmlCanvasElement"))?;
 
         let ctx = canvas
-            .get_context("webgl")
-            .unwrap()
-            .unwrap()
+            .get_context("webgl")?
+            .ok_or_else(|| Error::new("Can't get webgl context"))?
             .dyn_into::<WebGlRenderingContext>()
-            .unwrap();
+            .map_err(|_| Error::new("Can't cast context to WebGlRenderingContext"))?;
 
-        Scene { ctx }
+        Ok(Scene { ctx })
     }
 
     pub fn draw(&self) -> Result<(), JsValue> {

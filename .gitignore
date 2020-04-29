@@ -1,8 +1,5 @@
 /.idea
 /bin
-/dist
-/node_modules
 /pkg
 /target
-**/*.rs.bk
-/wasm-pack.log
+
