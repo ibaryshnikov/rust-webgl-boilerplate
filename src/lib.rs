@@ -1,12 +1,7 @@
-use js_sys::{WebAssembly, Error};
-use wasm_bindgen::prelude::*;
+use js_sys::{Error, WebAssembly};
 use wasm_bindgen::JsCast;
-use web_sys::{
-    HtmlCanvasElement,
-    WebGlProgram,
-    WebGlRenderingContext,
-    WebGlShader,
-};
+use wasm_bindgen::prelude::*;
+use web_sys::{HtmlCanvasElement, WebGlProgram, WebGlRenderingContext, WebGlShader};
 
 #[wasm_bindgen]
 pub struct Scene {
@@ -23,7 +18,8 @@ impl Scene {
         let canvas = document
             .get_element_by_id("canvas")
             .ok_or_else(|| Error::new("Can't get canvas element"))?;
-        let canvas = canvas.dyn_into::<HtmlCanvasElement>()
+        let canvas = canvas
+            .dyn_into::<HtmlCanvasElement>()
             .map_err(|_| Error::new("Can't cast element to HtmlCanvasElement"))?;
 
         let ctx = canvas
